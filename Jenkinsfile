@@ -165,7 +165,6 @@ pipeline {
                              fi
 			 fi
                       fi
-		      else 
                         echo "after $i attempts app is not ready yet"
 			echo "wait for app to start"
 			sleep 3 
