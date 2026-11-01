@@ -176,17 +176,17 @@ pipeline {
 	       '''	
 	    }
 	}
-//	stage("record successful deployment") {
-//		steps {
-//       		   writeFile(
-//                   file: env.ROLLBACK_FILE,
-//                   text: "${BUILD_NUMBER}"
-//                   )             
-//		{
-//	}
+	stage("record successful deployment") {
+		steps {
+       		   writeFile(
+                   file: env.ROLLBACK_FILE,
+                   text: "${BUILD_NUMBER}"
+                   )             
+		{
+	}
 	
 
-       }	
+       	
 
 
 }
