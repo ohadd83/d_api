@@ -184,6 +184,38 @@ pipeline {
                    )             
 		}
 	}
+	post {
+	   success {
+                echo """
+                ============================
+                DEPLOYED SUCCESSFULL
+                ============================
+                application: ${APP_NAME}
+                build_number: ${IMAGE_TAG} 
+                deployed successfuly
+                """
+	   }
+	   failure {
+                 echo """
+                 ============================
+                 DEPLOYMENT FAILED
+                 ============================
+                 
+                 """
+                 echo "Deployment failed "
+                 echo "starting rollback "
+                 sh '''
+                 ROLLBACK_TAG=$(cat /var/lib/jenkins/rollback/d_api_python/last_successful_tag)
+                 docker pull ${IMAGE_NAME}:${ROLLBACK_TAG}
+                 docker stop ${APP_NAME}
+                 docker rm -f ${APP_NAME}
+                 docker run -d --name ${APP_NAME} -p 8000:8000 ${IMAGE_NAME}:${ROLLBACK_TAG}
+                 '''
+		 echo "rollback finished successfuly"
+           }
+
+	}
+        
 	
    }
        	
