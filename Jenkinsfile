@@ -182,10 +182,10 @@ pipeline {
                    file: env.ROLLBACK_FILE,
                    text: "${BUILD_NUMBER}"
                    )             
-		{
+		}
 	}
 	
-
+   }
        	
 
 
