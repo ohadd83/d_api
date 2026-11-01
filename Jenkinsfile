@@ -5,7 +5,8 @@ pipeline {
 	environment {
 	   APP_NAME="d-api"
 	   IMAGE_NAME="ohadd306/d-api"
-	   IMAGE_TAG= "${BUILD_NUMBER}" 
+	   IMAGE_TAG= "${BUILD_NUMBER}"
+           PRD_PORT="8000" 
 
 	}
 
@@ -109,7 +110,67 @@ pipeline {
                 '''
   	    }
         }
+	stage("stg health check tests") {
+	    steps{
+		echo "test health check on stg"
+		   sh '''
+		   curl -f http://localhost:8002/health 
+		   curl -f http://localhost:8002/products/1
+		   
+		   '''
+		} 
+	}
+	stage("approve PRD deployment")  {
+	   steps {
+	      input(
+		message: """
+                Production Deployment Approval
 
+                Application: ${IMAGE_NAME}
+                Version: ${IMAGE_TAG}
+                Build: ${BUILD_NUMBER}
+
+                Deploy this version to PRODUCTION?
+            """,
+            ok: "Deploy ${IMAGE_TAG}",
+            submitter: "ohad"	
+
+	      )		
+	   }
+	}
+	stage("deploy on PRD") {
+	    steps {
+		sh '''
+		docker stop  ${APP_NAME} || true
+		docker rm -f ${APP_NAME}  || true
+		docker pull ${IMAGE_NAME}:${IMAGE_TAG}
+		docker run -d --name ${APP_NAME} -p ${PRD_PORT}:8000 ${IMAGE_NAME}:${IMAGE_TAG}
+		 
+		'''
+	    }
+	}
+	stage("test prd deployment health"){ 
+	    steps {
+	       echo "test prd deployment"
+	       sh '''
+	       	   for i in seq(1 3) ; do 
+	              if curl -fsS http://localhost:8000/health
+			echo "health check test path"
+		         if curl -fsS http://localhost:8000/products/1
+			   echo "products test path successfuly"
+			   exit 0 
+			 fi
+		      else 
+                        echo "after $i attempts app is not ready yet"
+			echo "wait for app to start"
+			sleep 3
+                      fi 
+		done
+		    
+	       '''	
+	    }
+	}
+	
 
        }	
 
