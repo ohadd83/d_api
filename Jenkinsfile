@@ -213,6 +213,7 @@ pipeline {
                  '''
 		 echo "rollback finished successfuly"
            }
+         }
 
 	
         
