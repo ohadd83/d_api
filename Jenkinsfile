@@ -184,6 +184,7 @@ pipeline {
                    )             
 		}
 	}
+}
 	post {
 	   success {
                 echo """
@@ -218,7 +219,7 @@ pipeline {
 	
         
 	
-   }
+   
        	
 
 
