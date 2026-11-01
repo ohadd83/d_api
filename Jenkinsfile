@@ -162,13 +162,16 @@ pipeline {
                              if curl -f -X POST -H "Content-Type: application/json" -d '{"product_id":1,"quantity":3}' http://localhost:8001/orders/ ; then
 			       echo "process order path"
                                exit 0 
-			     fi
+                             fi
+			 fi
+                      fi
 		      else 
                         echo "after $i attempts app is not ready yet"
 			echo "wait for app to start"
-			sleep 3
-                      fi 
+			sleep 3 
 		done
+                echo "production deployment tests failed"
+		exit 1
 		    
 	       '''	
 	    }
