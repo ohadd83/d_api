@@ -6,7 +6,8 @@ pipeline {
 	   APP_NAME="d-api"
 	   IMAGE_NAME="ohadd306/d-api"
 	   IMAGE_TAG= "${BUILD_NUMBER}"
-           PRD_PORT="8000" 
+           PRD_PORT="8000"
+           ROLLBACK_FILE="/var/lib/jenkins/rollback/d_api_python/last_successful_tag" 
 
 	}
 
@@ -174,6 +175,14 @@ pipeline {
 		    
 	       '''	
 	    }
+	}
+	stage("record successful deployment") {
+		steps {
+       		   writeFile(
+                   file: env.ROLLBACK_FILE,
+                   text: "${BUILD_NUMBER}"
+                   )             
+		{
 	}
 	
 
