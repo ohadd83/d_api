@@ -106,7 +106,7 @@ pipeline {
                 docker stop ${APP_NAME}-stg || true 
                 docker rm ${APP_NAME}-stg  || true 
 		docker pull ${IMAGE_NAME}:${IMAGE_TAG}
-                docker run -d --name ${APP_NAME}-stg  -p 8002:8000  ${IMAGE_NAME}:{IMAGE_TAG}
+                docker run -d --name ${APP_NAME}-stg  -p 8002:8000  ${IMAGE_NAME}:${IMAGE_TAG}
                 '''
   	    }
         }
