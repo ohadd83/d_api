@@ -113,6 +113,7 @@ pipeline {
 	stage("stg health check tests") {
 	    steps{
 		echo "test health check on stg"
+		sleep 5
 		   sh '''
 		   curl -f http://localhost:8002/health 
 		   curl -f http://localhost:8002/products/1
