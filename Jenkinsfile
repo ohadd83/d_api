@@ -158,9 +158,11 @@ pipeline {
 	              if curl -fsS http://localhost:8000/health ; then
 			echo "health check test path"
 		         if curl -fsS http://localhost:8000/products/1 ; then
-			   echo "products test path successfuly"
-			   exit 0 
-			 fi
+			   echo "products test path successfuly" ; then
+                             if curl -f -X POST -H "Content-Type: application/json" -d '{"product_id":1,"quantity":3}' http://localhost:8001/orders/
+			       echo "process order path"
+                               exit 0 
+			     fi
 		      else 
                         echo "after $i attempts app is not ready yet"
 			echo "wait for app to start"
