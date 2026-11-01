@@ -154,7 +154,7 @@ pipeline {
 	    steps {
 	       echo "test prd deployment"
 	       sh '''
-	       	   for i in seq(1 3) ; do 
+	       	   for i in {1..3} ; do 
 	              if curl -fsS http://localhost:8000/health ; then
 			echo "health check test path"
 		         if curl -fsS http://localhost:8000/products/1 ; then
