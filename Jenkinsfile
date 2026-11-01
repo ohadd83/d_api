@@ -159,7 +159,7 @@ pipeline {
 			echo "health check test path"
 		         if curl -fsS http://localhost:8000/products/1 ; then
 			   echo "products test path successfuly" 
-                             if curl -f -X POST -H "Content-Type: application/json" -d '{"product_id":1,"quantity":3}' http://localhost:8001/orders/ ; then
+                             if curl -f -X POST -H "Content-Type: application/json" -d '{"product_id":1,"quantity":3}' http://localhost:8000/orders/ ; then
 			       echo "process order path"
                                exit 0 
                              fi
